@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--spring的 IOC 和 DI的注解-->
+    <context:component-scan base-package="com.sport"></context:component-scan>
+    <!--如果bean 即有注解又有 xml配置的就需要这个注解-->
+    <context:annotation-config></context:annotation-config>
+
+
+
+    <!--aop 的注解 -->
+    <!--<aop:aspectj-autoproxy></aop:aspectj-autoproxy>-->
+
+
+
+
+
+<!--加载数据库的配置文件-->
+    <context:property-placeholder location="/WEB-INF/db.properties"></context:property-placeholder>
+<!--创建数据库 数据源-->
+    <bean id="datasource" class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="driverClassName" value="${db.driver}"></property>
+        <property name="url" value="${db.url}"></property>
+        <property name="username" value="${db.user}"></property>
+        <property name="password" value="${db.password}"></property>
+        <property name="maxTotal" value="10"></property>
+        <property name="maxIdle" value="5"></property>
+    </bean>
+<!--通过工厂bean创建sql session factory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="datasource"></property>
+        <property name="configLocation" value="/WEB-INF/mybatis/SqlMapConfig.xml"/>
+    </bean>
+
+    <!--创建单个mapper的代理类-->
+    <!--<bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">-->
+        <!--<property name="mapperInterface" value="com.sport.mapper.UserMapper"></property>-->
+        <!--<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>-->
+    <!--</bean>-->
+    <!--批量扫描 mapper接口类 并产生代理-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.sport.mapper"></property>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+    </bean>
+
+</beans>

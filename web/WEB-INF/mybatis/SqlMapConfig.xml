@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <mappers>
+        <!--<mapper resource="UserMapper.xml"></mapper>   不好用-->
+        <!--resource 相对于类路径的 相对路径-->
+        <!--url 完整绝对路径-->
+        <!--class 和类在同一个目录下  并且名称和类名一致-->
+        <!--<mapper class="com.sport.mapper.UserMapper"></mapper>-->
+        <package name="com.sport.mapper"></package>
+        <!--推荐 和类在同一个目录下  并且名称和类名一致-->
+    </mappers>
+</configuration>
